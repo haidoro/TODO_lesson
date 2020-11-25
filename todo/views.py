@@ -1,16 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login
+from django.views.generic import ListView
+from .models import TodoModel
+from django.http import HttpResponse
 
 
-def todo(request):
-    return HttpResponse('Hello!')
+class TodoList(ListView):
+    template_name = 'index.html'
+    model = TodoModel
 
 
 def signupview(request):
-    print(request.method)
     if request.method == 'POST':
         username_data = request.POST['username_data']
         password_data = request.POST['password_data']
