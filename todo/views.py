@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.db import IntegrityError
 
 
 def todo(request):
@@ -8,7 +9,6 @@ def todo(request):
 
 
 def signupview(request):
-    print(request.method)
     if request.method == 'POST':
         username_data = request.POST['username_data']
         password_data = request.POST['password_data']
@@ -17,5 +17,5 @@ def signupview(request):
         except IntegrityError:
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
     else:
-        print(User.objects.all())
+        return render(request, 'signup.html', {})
     return render(request, 'signup.html', {})
