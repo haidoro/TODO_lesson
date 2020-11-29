@@ -16,7 +16,7 @@ python -m venv dj_todo
    cd dj_todo
    ```
 
-3. 以下の仮想環境を実行するコマンド
+3. 以下の仮想環境を実行するコマンドを実行（MacとWindowsでコマンドは違うので注意）
 
 #### Macの場合
 
@@ -173,7 +173,7 @@ export SECRET_KEY_TODO='w0ni-ss@e13^v!dddwb59bug+g4h18-3h^*!sisden#bb@66+@ase'
 
 #### アプリの指定
 
-1. インストールしたアプリケーションの指定
+1. インストールしたアプリの指定
 
 settings.py　INSTALLED_APPS 部分
 
@@ -415,6 +415,14 @@ python manage.py runserver
 
 URLアドレスは以下を入れる。
 
+http://127.0.0.1:8000/test/
+
+画面に「Hello!」と表示されます。
+
+### データ登録
+
+次に、adminのアドレスを入れてデータを登録してみます。
+
 http://127.0.0.1:8000/admin/
 
 **http://127.0.0.1:8000ではないので注意！**
@@ -487,12 +495,14 @@ urlpatterns = [
 #### views.pyの編集
 
 1. import文追加
+   `from django.db import IntegrityError`を追加
 2. def signupview(request):関数の定義追加
 
 ```
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.db import IntegrityError
 
 
 def todo(request):
@@ -500,7 +510,6 @@ def todo(request):
 
 
 def signupview(request):
-    print(request.method)
     if request.method == 'POST':
         username_data = request.POST['username_data']
         password_data = request.POST['password_data']
@@ -509,8 +518,9 @@ def signupview(request):
         except IntegrityError:
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
     else:
-        print(User.objects.all())
+        return render(request, 'signup.html', {})
     return render(request, 'signup.html', {})
+
 
 ```
 
@@ -518,7 +528,7 @@ def signupview(request):
 
 ## テンプレートの編集
 
-### signup.html
+### base.htmlテンプレート
 
 1. templates/base.htmlを新規作成
 2. 以下コードを追加
@@ -578,7 +588,7 @@ def signupview(request):
 </html>
 ```
 
-
+### signup.htmlテンプレート
 
 1. templates/signup.htmlを新規作成
 2. 以下コードを追加
@@ -709,7 +719,6 @@ def todo(request):
 
 
 def signupview(request):
-    print(request.method)
     if request.method == 'POST':
         username_data = request.POST['username_data']
         password_data = request.POST['password_data']
@@ -718,7 +727,7 @@ def signupview(request):
         except IntegrityError:
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
     else:
-        print(User.objects.all())
+        return render(request, 'signup.html', {})
     return render(request, 'signup.html', {})
 
 
@@ -752,7 +761,6 @@ def loginview(request):
 
 <div class="container">
     <form class="form-signin" method='post'>{% csrf_token %}
-        <img class="mb-4" src="/docs/4.4/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Please login</h1>
         <label for="inputEmail" class="sr-only">Username</label>
         <input type="text" id="inputEmail" class="form-control" placeholder="username" name="username_data" required
@@ -826,7 +834,7 @@ def signupview(request):
         except IntegrityError:
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
     else:
-        print(User.objects.all())
+        return render(request, 'signup.html', {})
     return render(request, 'signup.html', {})
  
  
@@ -1055,7 +1063,6 @@ class TodoDetail(DetailView):
 
 
 def signupview(request):
-    print(request.method)
     if request.method == 'POST':
         username_data = request.POST['username_data']
         password_data = request.POST['password_data']
@@ -1064,7 +1071,7 @@ def signupview(request):
         except IntegrityError:
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
     else:
-        print(User.objects.all())
+        return render(request, 'signup.html', {})
     return render(request, 'signup.html', {})
 
 
@@ -1170,7 +1177,6 @@ class TodoDetail(DetailView):
 
 
 def signupview(request):
-    print(request.method)
     if request.method == 'POST':
         username_data = request.POST['username_data']
         password_data = request.POST['password_data']
@@ -1179,7 +1185,7 @@ def signupview(request):
         except IntegrityError:
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
     else:
-        print(User.objects.all())
+        return render(request, 'signup.html', {})
     return render(request, 'signup.html', {})
 
 
@@ -1290,7 +1296,6 @@ class TodoDetail(DetailView):
 
 
 def signupview(request):
-    print(request.method)
     if request.method == 'POST':
         username_data = request.POST['username_data']
         password_data = request.POST['password_data']
@@ -1299,7 +1304,7 @@ def signupview(request):
         except IntegrityError:
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
     else:
-        print(User.objects.all())
+        return render(request, 'signup.html', {})
     return render(request, 'signup.html', {})
 
 
@@ -1414,7 +1419,7 @@ def signupview(request):
         except IntegrityError:
             return render(request, 'signup.html', {'error': 'このユーザーは既に登録されています'})
     else:
-        print(User.objects.all())
+        return render(request, 'signup.html', {})
     return render(request, 'signup.html', {})
 
 
